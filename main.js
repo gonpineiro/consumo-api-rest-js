@@ -6,9 +6,9 @@ const getCatPic = async () => {
     const res = await fetch(ULR)
     const data = await res.json()
 
-    document.getElementById('1').src = data[0].url
-    document.getElementById('2').src = data[1].url
-    document.getElementById('3').src = data[2].url
+    document.getElementById('img1').src = data[0].url
+    document.getElementById('img2').src = data[1].url
+    document.getElementById('img3').src = data[2].url
 }
 
 document.querySelector('#new-cat').addEventListener('click', getCatPic)
