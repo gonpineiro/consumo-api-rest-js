@@ -1,7 +1,7 @@
 const API_KEY = 'live_tX2syfWhhB9BPDgir3GkaIBo8JusxLWNA9iR1UfcMfFSQcfWl6sNQ4Bmf2CA9Ql9'
-const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2&api_key=' + API_KEY
-const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites?api_key=' + API_KEY
-const API_URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?api_key=${API_KEY}`
+const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2'
+const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites'
+const API_URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`
 
 const spanError = document.getElementById('error');
 
@@ -24,10 +24,15 @@ const loadRandomMichis = async () => {
 }
 
 const loadFavoritesMichis = async () => {
-    const res = await fetch(API_URL_FAVORITES)
+    const res = await fetch(API_URL_FAVORITES, {
+        method: 'GET',
+        headers: {
+            'X-API-KEY': API_KEY
+        }
+    })
 
     if (res.status !== 200) {
-        spanError.innerHTML = 'Hubo un error: ' + res.status
+        spanError.innerHTML = 'Hubo un error: ' + res.status + await res.text()
     } else {
         const data = await res.json();
 
@@ -56,7 +61,8 @@ const saveFavoriteMichi = async (id) => {
     const res = await fetch(API_URL_FAVORITES, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-API-KEY': API_KEY
         },
         body: JSON.stringify({
             image_id: id
@@ -73,7 +79,11 @@ const saveFavoriteMichi = async (id) => {
 
 const deleteFavoriteMichi = async (id) => {
     const res = await fetch(API_URL_FAVORITES_DELETE(id), {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY': API_KEY
+        },
     })
 
     if (res.status !== 200) {
