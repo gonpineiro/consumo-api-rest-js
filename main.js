@@ -1,6 +1,7 @@
 const API_KEY = 'live_tX2syfWhhB9BPDgir3GkaIBo8JusxLWNA9iR1UfcMfFSQcfWl6sNQ4Bmf2CA9Ql9'
 const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2&api_key=' + API_KEY
 const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites?api_key=' + API_KEY
+const API_URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?api_key=${API_KEY}`
 
 const spanError = document.getElementById('error');
 
@@ -30,6 +31,11 @@ const loadFavoritesMichis = async () => {
     } else {
         const data = await res.json();
 
+        const section = document.getElementById('favoritesMichis');
+        section.innerHTML = '';
+        const h2 = document.createElement('h2').textContent = 'Michis Favoritos';
+        section.append(h2)
+
         data.forEach(cat => {
             const article = document.createElement('article')
             const img = document.createElement('img')
@@ -38,9 +44,10 @@ const loadFavoritesMichis = async () => {
             const button = document.createElement('button')
             button.textContent = 'Borrar Gato de favoritos'
             button.dataset.id = cat.image.id
+            button.onclick = () => deleteFavoriteMichi(cat.id)
             article.append(img, button)
 
-            document.getElementById('favoritesMichis').append(article)
+            section.append(article)
         });
     }
 }
@@ -56,12 +63,24 @@ const saveFavoriteMichi = async (id) => {
         })
     })
 
+    if (res.status !== 200) {
+        spanError.innerHTML = 'Hubo un error: ' + res.status + ' ' + await res.text()
+    } else {
+        const data = await res.json();
+        loadFavoritesMichis();
+    }
+}
+
+const deleteFavoriteMichi = async (id) => {
+    const res = await fetch(API_URL_FAVORITES_DELETE(id), {
+        method: 'DELETE'
+    })
 
     if (res.status !== 200) {
         spanError.innerHTML = 'Hubo un error: ' + res.status + ' ' + await res.text()
     } else {
         const data = await res.json();
-        console.log(data);
+        loadFavoritesMichis();
     }
 }
 
