@@ -9,6 +9,8 @@
     <body>
         <h1>Michis Apps</h1>
 
+        <span id="error"></span>
+
         <section id="randomMichis">
             <h2>Michis Aleatorios</h2>
             <article>
@@ -21,12 +23,7 @@
                 <button>Guardar en FAB</button>
             </article>
 
-            <article>
-                <img alt="Foto Gatito" id="img3" width="150" />
-                <button>Guardar en FAB</button>
-            </article>
-
-            <button id="new-cat">Cargar nuevo Gato</button>
+            <button id="new-cat" onclick="loadRandomMichis()">Cargar nuevo Gato</button>
         </section>
 
         <section id="favoritesMichis">
