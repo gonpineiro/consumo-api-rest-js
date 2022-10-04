@@ -2,6 +2,7 @@ const API_KEY = 'live_tX2syfWhhB9BPDgir3GkaIBo8JusxLWNA9iR1UfcMfFSQcfWl6sNQ4Bmf2
 const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2'
 const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites'
 const API_URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`
+const API_URL_UPLOAD = 'https://api.thecatapi.com/v1/images/upload'
 
 const spanError = document.getElementById('error');
 
@@ -38,7 +39,8 @@ const loadFavoritesMichis = async () => {
 
         const section = document.getElementById('favoritesMichis');
         section.innerHTML = '';
-        const h2 = document.createElement('h2').textContent = 'Michis Favoritos';
+        const h2 = document.createElement('h2')
+        h2.textContent = 'Michis Favoritos';
         section.append(h2)
 
         data.forEach(cat => {
@@ -92,6 +94,23 @@ const deleteFavoriteMichi = async (id) => {
         const data = await res.json();
         loadFavoritesMichis();
     }
+}
+
+const updaloadMichiPhoto = async () => {
+    const form = document.getElementById('uploadingForm')
+
+    const formData = new FormData(form);
+
+    const res = await fetch(API_URL_UPLOAD, {
+        method: 'POST',
+        headers: {
+            'X-API-KEY': API_KEY,
+        },
+        body: formData
+    })
+
+    const data = await res.json()
+    saveFavoriteMichi(data.id)
 }
 
 loadRandomMichis();
