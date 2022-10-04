@@ -23,6 +23,27 @@ const loadFavoritesMichis = async () => {
         spanError.innerHTML = 'Hubo un error: ' + res.status
     } else {
         const data = await res.json();
+        console.log(data);
+    }
+}
+
+const saveFavoriteMichi = async () => {
+    const res = await fetch(API_URL_FAVORITES, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            image_id: '12'
+        })
+    })
+
+
+    if (res.status !== 200) {
+        spanError.innerHTML = 'Hubo un error: ' + res.status + ' ' + await res.text()
+    } else {
+        const data = await res.json();
+        console.log(data);
     }
 }
 
