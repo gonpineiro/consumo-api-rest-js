@@ -1,4 +1,10 @@
 const API_KEY = 'live_tX2syfWhhB9BPDgir3GkaIBo8JusxLWNA9iR1UfcMfFSQcfWl6sNQ4Bmf2CA9Ql9'
+const api = axios.create({
+    baseURL: 'https://api.thecatapi.com/v1'
+})
+
+api.defaults.headers.common['X-API-KEY'] = API_KEY
+
 const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2'
 const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites'
 const API_URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`
@@ -19,7 +25,7 @@ const loadRandomMichis = async () => {
         const btn1 = document.getElementById('btn1')
         const btn2 = document.getElementById('btn2')
 
-        btn1.onclick = () => saveFavoriteMichi(data[0].id)
+        btn1.onclick = () => saveFavoriteMichiAxios(data[0].id)
         btn2.onclick = () => saveFavoriteMichi(data[1].id)
     }
 }
@@ -77,6 +83,14 @@ const saveFavoriteMichi = async (id) => {
         const data = await res.json();
         loadFavoritesMichis();
     }
+}
+
+const saveFavoriteMichiAxios = async (id) => {
+    const res = await api.post('/favourites', {
+        image_id: id
+    })
+
+    console.log(res);
 }
 
 const deleteFavoriteMichi = async (id) => {
